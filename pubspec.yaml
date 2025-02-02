@@ -1,0 +1,40 @@
+name: telemusic_v2
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  shared_preferences:
+  intl:
+  http:
+  permission_handler:
+  equatable:
+  # get_it:
+  google_fonts:
+  get:
+  flutter_svg:
+  html_to_flutter: ^0.2.3-dev.8
+  we_slide: ^2.4.0
+  cached_network_image: 
+  just_audio:
+  audio_service:  
+  path_provider:
+  dio: ^5.8.0+1
+  flutter_widget_from_html_core:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
