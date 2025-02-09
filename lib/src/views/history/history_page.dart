@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:telemusic_v2/src/models/music_model.dart';
 import 'package:telemusic_v2/src/views/music_player/each_music_display_widget.dart';
 import 'package:telemusic_v2/src/views/music_player/music_player_widget.dart';
 import 'package:telemusic_v2/utils/constants/app_constants.dart';
+import 'package:telemusic_v2/utils/constants/app_extensions.dart';
 import 'package:telemusic_v2/utils/constants/app_functions.dart';
+import 'package:telemusic_v2/utils/constants/app_svgs.dart';
 import 'package:telemusic_v2/utils/services/network/api_repo.dart';
+import 'package:telemusic_v2/utils/services/overlay/dialog_service.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -50,6 +54,15 @@ class _HistoryPageState extends State<HistoryPage> {
     }
   }
 
+  Future<void> onClickRemoveEachSong({required String musicId}) async {
+    DialogService().showLoadingDialog(context: context);
+    final result = await apiRepo.toggleHistory(musicId: musicId, xAdd: false);
+    DialogService().dismissDialog(context: Get.context!);
+    superPrint(result);
+    if (result.xSuccess) {}
+    initLoad();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +99,32 @@ class _HistoryPageState extends State<HistoryPage> {
                         musicModel: each,
                         serialNo: index + 1,
                         playList: allData,
+                        moreActions: [
+                          PopupMenuItem(
+                            onTap: () {
+                              vibrateNow();
+                              onClickRemoveEachSong(
+                                  musicId: each.id.toString());
+                            },
+                            child: Row(
+                              children: [
+                                SvgPicture.string(
+                                  AppSvgs.delete,
+                                  colorFilter: ColorFilter.mode(
+                                      Theme.of(context).colorScheme.error,
+                                      BlendMode.srcIn),
+                                ),
+                                (5.widthBox()),
+                                Text(
+                                  "Remove",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.error),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       );
                     },
                   );

@@ -21,6 +21,10 @@ class EachCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final trimmed =
+        eachCategory.categoryName.trim().toLowerCase().replaceAll(" ", "");
+    bool xArtists = trimmed.contains("artist");
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,8 +60,14 @@ class EachCategoryWidget extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+              //myArr.length > 5 ? myArr.sublist(myArr.length - 5) : myArr
+              //eachCategory.subCategories
               (AppConstants.basePadding).widthBox(),
-              ...eachCategory.subCategories.map(
+              ...(eachCategory.subCategories.length > 10
+                      ? eachCategory.subCategories
+                          .sublist(eachCategory.subCategories.length - 10)
+                      : eachCategory.subCategories)
+                  .map(
                 (eachSubCategory) {
                   return Padding(
                     padding: const EdgeInsets.only(
@@ -70,21 +80,28 @@ class EachCategoryWidget extends StatelessWidget {
                       child: SizedBox(
                         width: Get.width * 0.4,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: xArtists
+                              ? CrossAxisAlignment.center
+                              : CrossAxisAlignment.start,
                           children: [
                             Card(
                               elevation: 10,
                               margin: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)),
+                                  borderRadius: BorderRadius.circular(
+                                      xArtists ? 1000000 : 0)),
                               child: AspectRatio(
                                 aspectRatio: 1,
-                                child: CachedNetworkImage(
-                                  imageUrl: eachSubCategory.image,
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) {
-                                    return const ImagePlaceholderWidget();
-                                  },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      xArtists ? 1000000 : 0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: eachSubCategory.image,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) {
+                                      return const ImagePlaceholderWidget();
+                                    },
+                                  ),
                                 ),
                               ),
                             ),

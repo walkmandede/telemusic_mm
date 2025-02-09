@@ -76,9 +76,6 @@ class PlaylistDetailPageController extends GetxController {
       PlaylistPageController playlistPageController = Get.find();
       playlistPageController.initLoad();
       Get.back();
-
-      DialogService()
-          .showConfirmDialog(context: Get.context!, label: result.message);
     } else {
       DialogService()
           .showConfirmDialog(context: Get.context!, label: result.message);

@@ -88,6 +88,10 @@ class _AuthHomePageState extends State<AuthHomePage> {
                           aspectRatio: 1,
                           child: Image.asset(
                             AppAssets.appLogo,
+                            errorBuilder: (context, error, stackTrace) {
+                              superPrint(error);
+                              return Text("Error in image");
+                            },
                           ),
                         ),
                       ),

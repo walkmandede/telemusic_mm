@@ -77,12 +77,7 @@ class ApiRepo {
           ),
           xNeedToken: true);
       result = [];
-      superPrint(apiResponse.bodyData,
-          title: ApiRequestModel(
-            enumApiRequestMethods: EnumApiRequestMethods.post,
-            data: {"id": id, "type": type},
-            url: ApiEndPoints.getMusicListByCategory,
-          ).data);
+
       Iterable iterable = apiResponse.bodyData["data"] ?? [];
 
       for (final each in iterable) {
@@ -305,7 +300,6 @@ class ApiRepo {
             url: ApiEndPoints.getHistory,
           ),
           xNeedToken: true);
-      superPrint(apiResponse.bodyData);
       if (apiResponse.xSuccess) {
         Iterable rawData = apiResponse.bodyData["data"] ?? [];
         final imagePath = apiResponse.bodyData["imagePath"].toString();
@@ -329,7 +323,6 @@ class ApiRepo {
               url: ApiEndPoints.getFavorites,
               data: const {"type": "audio"}),
           xNeedToken: true);
-      superPrint(apiResponse.bodyData);
       if (apiResponse.xSuccess) {
         Iterable rawData = apiResponse.bodyData["data"] ?? [];
         final imagePath = apiResponse.bodyData["imagePath"].toString();
@@ -366,7 +359,7 @@ class ApiRepo {
       result = await ApiService().makeARequest(
           apiRequestData: ApiRequestModel(
               enumApiRequestMethods: EnumApiRequestMethods.post,
-              url: ApiEndPoints.addRemoveToFavorites,
+              url: ApiEndPoints.addRemoveToHistory,
               data: {"music_id": musicId, "tag": xAdd ? "add" : "remove"}),
           xNeedToken: true);
     } catch (e) {
@@ -385,7 +378,6 @@ class ApiRepo {
           ),
           xNeedToken: true);
       if (apiReponse.xSuccess) {
-        superPrint(apiReponse.bodyData);
         Iterable rawData = apiReponse.bodyData["data"]["blogs"] ?? [];
         result.addAll(rawData.map((e) => BlogModel.fromMap(data: e)));
       }

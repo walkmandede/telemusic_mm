@@ -48,6 +48,7 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
         speed: _player.speed,
       );
       musicPlayingState.currentPlaybackState.value = newPlaybackState;
+
       playbackState.add(newPlaybackState);
     });
 
@@ -93,22 +94,6 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
     }
   }
 
-  // Map `AudioPlaybackEvent` to `PlaybackState`
-  // PlaybackState playbackStateFromPlayer(PlaybackEvent event) {
-  // return PlaybackState(
-  //   controls: [
-  //     MediaControl.skipToPrevious,
-  //     _player.playing ? MediaControl.pause : MediaControl.play,
-  //     MediaControl.skipToNext,
-  //   ],
-  //   androidCompactActionIndices: [0, 1, 2],
-  //   processingState: _mapProcessingState(_player.processingState),
-  //   playing: _player.playing,
-  //   bufferedPosition: _player.bufferedPosition,
-  //   speed: _player.speed,
-  // );
-  // }
-
   // Play all songs in order
   Future<void> playAllSongs(
       {required List<MediaItem> songs,
@@ -134,7 +119,7 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       }
       saveToHistory();
 
-      await _player.play();
+      await play();
     } catch (e) {
       superPrint(e);
     }
@@ -167,7 +152,7 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
         }
         saveToHistory();
 
-        await _player.play();
+        await play();
       } else {
         debugPrint("The desired song is not in the queue.");
       }
@@ -186,7 +171,7 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
       await _player.setUrl(musicPlayingState.queue.value[nextIndex].id);
       saveToHistory();
 
-      _player.play();
+      await play();
       musicPlayingState.currentMediaItem.value =
           musicPlayingState.queue.value[nextIndex];
     } else {
@@ -200,7 +185,8 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
     if (currentIndex >= 1) {
       final prevIndex = currentIndex - 1;
       await _player.setUrl(musicPlayingState.queue.value[prevIndex].id);
-      _player.play();
+      // _player.play();
+      await play();
       musicPlayingState.currentMediaItem.value =
           musicPlayingState.queue.value[prevIndex];
     } else {}
@@ -324,7 +310,24 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
   }
 
   @override
-  Future<void> play() => _player.play();
+  Future<void> play() async {
+    _player.play();
+    if (_player.playing) {
+      // Show a notification when the audio is playing
+      AudioServiceBackground.setState(
+        controls: [
+          MediaControl.skipToPrevious,
+          MediaControl.pause,
+          MediaControl.skipToNext,
+        ],
+        playing: true,
+        processingState: AudioProcessingState.ready,
+        position: _player.position,
+        bufferedPosition: _player.bufferedPosition,
+        speed: _player.speed,
+      );
+    }
+  }
 
   @override
   Future<void> pause() => _player.pause();
@@ -336,10 +339,14 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
   }
 
   @override
-  Future<void> seek(Duration position) => _player.seek(position);
+  Future<void> seek(Duration position) async {
+    superPrint("seeked");
+    _player.seek(position);
+  }
 
   @override
   Future<void> skipToNext() async {
+    superPrint("skipped");
     final currentIndex = musicPlayingState.queue.value
         .indexOf(musicPlayingState.currentMediaItem.value!);
     if (currentIndex + 1 < musicPlayingState.queue.value.length) {

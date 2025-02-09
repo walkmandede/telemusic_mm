@@ -1,7 +1,7 @@
 name: telemusic_v2
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.1.0
+version: 7.0.0
 
 environment:
   sdk: ^3.5.4
@@ -27,6 +27,9 @@ dependencies:
   path_provider:
   dio: ^5.8.0+1
   flutter_widget_from_html_core:
+  flutter_native_splash:
+  flutter_launcher_icons:
+  google_mobile_ads:
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +41,20 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+
+flutter_native_splash:
+  color: "#fee601"  # Background color
+  image: assets/images/telemusic_logo.jpg  # Path to splash image
+  android: true
+  ios: true
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  color: "#fee601"  # Background color
+  image_path: "assets/images/telemusic_logo.jpg"  
+  adaptive_icon_background: "#fee601"  # (Optional) Background color for Android adaptive icons
+  # adaptive_icon_foreground: "assets/icon_foreground.png"  # (Optional) Foreground icon for Android adaptive icons
+
+

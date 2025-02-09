@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemusic_v2/src/controllers/ads/ads_handler.dart';
 import 'package:telemusic_v2/src/controllers/my_audio_handler.dart';
 import 'package:telemusic_v2/src/models/artist_model.dart';
 import 'package:telemusic_v2/src/views/_common/image_placeholder_widget.dart';
@@ -27,6 +28,7 @@ class ArtistDetailPage extends StatefulWidget {
 class _ArtistDetailPageState extends State<ArtistDetailPage> {
   late ArtistDetailPageController artistDetailPageController;
   MusicPlayerPageController musicPlayerPageController = Get.find();
+  AdsHandler adsHandler = Get.find();
 
   @override
   void initState() {
@@ -43,6 +45,8 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
   _initLoad() async {
     artistDetailPageController = Get.put(ArtistDetailPageController());
     artistDetailPageController.initLoad(artistModel: widget.artistModel);
+    adsHandler.loadBannerAd();
+    superPrint("artist Detail page");
   }
 
   @override
@@ -108,9 +112,10 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (widget.artistModel.enumStreamChannelCountMap.isNotEmpty)
-                    const ArtistDetailStreamCountSection(),
+                  // if (widget.artistModel.enumStreamChannelCountMap.isNotEmpty)
+                  //   const ArtistDetailStreamCountSection(),
                   const ArtistDetailActionsSection(),
+                  adsHandler.getBannerAdWidget(),
                   const ArtistDetailTabBarWidget(),
                   ValueListenableBuilder(
                     valueListenable: artistDetailPageController.selectedTab,

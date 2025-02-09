@@ -124,4 +124,8 @@ class UserModel extends Equatable {
 
     return initials;
   }
+
+  bool xPremium() {
+    return planId > 0;
+  }
 }

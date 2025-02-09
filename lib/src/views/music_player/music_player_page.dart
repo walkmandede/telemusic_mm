@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:telemusic_v2/src/controllers/ads/ads_handler.dart';
 import 'package:telemusic_v2/src/controllers/data_controller.dart';
 import 'package:telemusic_v2/src/controllers/my_audio_handler.dart';
 import 'package:telemusic_v2/src/views/_common/image_placeholder_widget.dart';
@@ -30,6 +31,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   late AnimationController rotationAnimation;
   DataController dataController = Get.find();
   MusicPlayerPageController musicPlayerPageController = Get.find();
+  AdsHandler adsHandler = Get.find();
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     rotationAnimation =
         AnimationController(vsync: this, duration: const Duration(seconds: 10));
     rotationAnimation.repeat();
+    adsHandler.loadBannerAd();
   }
 
   @override
@@ -419,11 +422,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                             DialogService()
                                 .dismissDialog(context: Get.context!);
                             if (apiResponseModel.xSuccess) {
-                              dataController.updateFavoriteList();
-
-                              Get.showSnackbar(const GetSnackBar(
-                                message: "Added to favorites",
-                                duration: Duration(milliseconds: 2000),
+                              await dataController.updateFavoriteList();
+                              Get.showSnackbar(GetSnackBar(
+                                message: dataController.xIsFavorite(
+                                        audioUrl: mediaItem.id)
+                                    ? "Added to favorites"
+                                    : "Removed from favorites",
+                                duration: const Duration(milliseconds: 2000),
                               ));
                             } else {
                               Get.showSnackbar(GetSnackBar(
@@ -525,7 +530,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   },
                 );
               }),
-        )
+        ),
+        adsHandler.getBannerAdWidget()
       ],
     );
   }

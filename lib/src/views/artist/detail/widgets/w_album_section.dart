@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemusic_v2/src/views/_common/image_placeholder_widget.dart';
+import 'package:telemusic_v2/src/views/album/album_detail_page.dart';
+import 'package:telemusic_v2/utils/services/network/api_repo.dart';
 import '../../../../../utils/constants/app_constants.dart';
 import '../c_artist_detail_page_controller.dart';
 
@@ -37,6 +39,11 @@ class ArtistDetailAlbumSection extends StatelessWidget {
               ...artistDetailPageController.allAlbums.map(
                 (each) {
                   return ListTile(
+                    onTap: () {
+                      Get.to(() => AlbumDetailPage(
+                          albumModel: each,
+                          enumGetMusicTypes: EnumGetMusicTypes.albums));
+                    },
                     contentPadding:
                         const EdgeInsets.only(left: 0, right: 0, bottom: 0),
                     title: Text(each.name),

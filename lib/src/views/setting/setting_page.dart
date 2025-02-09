@@ -34,7 +34,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Setting"),
+        title: const Text("Settings"),
         centerTitle: false,
       ),
       body: SizedBox.expand(
@@ -54,91 +54,96 @@ class _SettingPageState extends State<SettingPage> {
             //     bottom: AppConstants.basePadding + Get.mediaQuery.padding.bottom),
             children: [
               profileWidget(),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  Get.to(() => const BlogsPage());
-                },
-                title: const Text("Blogs"),
-              ),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  Get.to(() => const FavoritePage());
-                },
-                title: const Text("Favorites"),
-              ),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  Get.to(() => const HistoryPage());
-                },
-                title: const Text("History"),
-              ),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  Get.to(() => const DownloadPage());
-                },
-                title: const Text("Downloads"),
-              ),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  Get.to(() => const TncPage());
-                },
-                title: const Text("Terms & Conditions"),
-              ),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  Get.to(() => const PrivacyPolicyPage());
-                },
-                title: const Text("Privacy Policy"),
-              ),
-              ValueListenableBuilder(
-                valueListenable: dataController.currentUser,
-                builder: (context, currentUser, child) {
-                  if (currentUser == null) {
-                    return const SizedBox.shrink();
-                  } else {
-                    if (currentUser.xShouldShowPayment()) {
-                      return ListTile(
-                        onTap: () {
-                          vibrateNow();
-                          Get.to(() => const PaymentPage());
-                        },
-                        title: const Text("Payment Methods"),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }
-                },
-              ),
-              const Spacer(),
-              ListTile(
-                onTap: () {
-                  vibrateNow();
-                  DialogService().showConfirmDialog(
-                    context: context,
-                    label: "Are you sure to delete?",
-                    onClickYes: () async {
-                      final apiResponse = await ApiRepo().deleteAccount();
-                      if (apiResponse.xSuccess) {
-                        Get.off(() => const AuthHomePage());
-                      }
-                    },
-                  );
-                },
-                leading: SvgPicture.string(
-                  AppSvgs.delete,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.red, BlendMode.srcIn),
-                ),
-                title: const Text(
-                  "Delete Account",
-                  style: TextStyle(color: Colors.red),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        Get.to(() => const BlogsPage());
+                      },
+                      title: const Text("Blogs"),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        Get.to(() => const FavoritePage());
+                      },
+                      title: const Text("Favorites"),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        Get.to(() => const HistoryPage());
+                      },
+                      title: const Text("History"),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        Get.to(() => const DownloadPage());
+                      },
+                      title: const Text("Downloads"),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        Get.to(() => const TncPage());
+                      },
+                      title: const Text("Terms & Conditions"),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        Get.to(() => const PrivacyPolicyPage());
+                      },
+                      title: const Text("Privacy Policy"),
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: dataController.currentUser,
+                      builder: (context, currentUser, child) {
+                        if (currentUser == null) {
+                          return const SizedBox.shrink();
+                        } else {
+                          if (currentUser.xShouldShowPayment()) {
+                            return ListTile(
+                              onTap: () {
+                                vibrateNow();
+                                Get.to(() => const PaymentPage());
+                              },
+                              title: const Text("Payment Methods"),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }
+                      },
+                    ),
+                    ListTile(
+                      onTap: () {
+                        vibrateNow();
+                        DialogService().showConfirmDialog(
+                          context: context,
+                          label: "Are you sure to delete?",
+                          yesLabel: "Delete",
+                          noLabel: "No",
+                          onClickYes: () async {
+                            final apiResponse = await ApiRepo().deleteAccount();
+                            if (apiResponse.xSuccess) {
+                              Get.off(() => const AuthHomePage());
+                            }
+                          },
+                          onClickNo: () {},
+                        );
+                      },
+                      title: Text(
+                        "Delete Account",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.error),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               ListTile(

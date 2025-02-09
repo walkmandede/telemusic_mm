@@ -81,12 +81,15 @@ class _DownloadPageState extends State<DownloadPage> {
                               DialogService().showConfirmDialog(
                                 context: context,
                                 label: "Are you sure?",
+                                yesLabel: "Delete",
+                                noLabel: "No",
                                 onClickYes: () async {
                                   final result = await AudioDownloader
                                       .deleteDownloadedSong(eachData.id);
                                   downloadPageController.initLoad();
                                   superPrint(result);
                                 },
+                                onClickNo: () {},
                               );
                             },
                             icon: const Icon(

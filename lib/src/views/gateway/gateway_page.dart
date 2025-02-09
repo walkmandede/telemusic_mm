@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:telemusic_v2/src/models/user_model.dart';
 import 'package:telemusic_v2/src/views/auth/auth_home_page.dart';
 import 'package:telemusic_v2/src/views/home/home_page.dart';
+import 'package:telemusic_v2/utils/constants/app_assets.dart';
 import 'package:telemusic_v2/utils/constants/app_functions.dart';
 import 'package:telemusic_v2/utils/services/local_stroage/sp_keys.dart';
 import 'package:telemusic_v2/utils/services/network/api_service.dart';
@@ -130,9 +131,12 @@ class _GatewayPageState extends State<GatewayPage> {
   Widget build(BuildContext context) {
     //this can be treaed as a splash loading screen (intro)
     return Scaffold(
-      body: Center(
-        child: CupertinoActivityIndicator(),
-      ),
-    );
+        backgroundColor: Theme.of(context).primaryColor,
+        body: Image.asset(
+          AppAssets.appLogo,
+          width: Get.width,
+          height: Get.height,
+          fit: BoxFit.contain,
+        ));
   }
 }

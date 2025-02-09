@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:telemusic_v2/src/controllers/ads/ads_handler.dart';
 
 void dismissKeyboard() {
   FocusManager.instance.primaryFocus?.unfocus();
@@ -18,6 +20,8 @@ void saveLogFromException(e1, e2) {
 void vibrateNow() {
   try {
     HapticFeedback.selectionClick();
+    AdsHandler adsHandler = Get.find();
+    adsHandler.addClickCount();
   } catch (e1, e2) {
     saveLogFromException(e1, e2);
     null;

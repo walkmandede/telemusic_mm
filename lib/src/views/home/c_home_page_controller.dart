@@ -90,7 +90,9 @@ class HomePageController extends GetxController
     toggleSideBar();
     DialogService().showConfirmDialog(
       context: Get.context!,
-      label: "Are you sure to log out?",
+      label: "Are you sure to?",
+      yesLabel: "Log Out",
+      noLabel: "No",
       onClickYes: () async {
         try {
           SharedPreferences sharedPreferences =
