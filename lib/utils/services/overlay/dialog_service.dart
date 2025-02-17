@@ -107,6 +107,29 @@ class DialogService {
                           ),
                         ),
                       ),
+                    if (yesLabel == null && noLabel == null)
+                      Expanded(
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: AppConstants.baseButtonHeightMS,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (onClickYes != null) onClickYes();
+                              dismissDialog(context: context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                            ),
+                            child: const Text(
+                              "Close",
+                              style: TextStyle(
+                                fontSize: AppConstants.baseFontSizeM,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 )
               ],

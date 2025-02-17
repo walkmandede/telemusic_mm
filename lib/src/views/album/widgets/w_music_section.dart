@@ -37,6 +37,7 @@ class AlbumDetailMusicSection extends StatelessWidget {
                 (each) {
                   return EachMusicDisplayWidget(
                       musicModel: each,
+                      playList: albumDetailPageController.allMusics,
                       serialNo:
                           albumDetailPageController.allMusics.indexOf(each) +
                               1);

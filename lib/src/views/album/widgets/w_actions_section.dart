@@ -73,11 +73,13 @@ class AlbumnDetailActionsSection extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           vibrateNow();
+
                           audioHandler.playAllSongs(
                               songs:
                                   albumDetailPageController.allMusics.map((e) {
                                 return e.convertToMediaItem();
                               }).toList(),
+                              index: 0,
                               xNetworkSong: true);
                         },
                         style: ElevatedButton.styleFrom(

@@ -357,6 +357,8 @@ class MyAudioHandler extends BaseAudioHandler with SeekHandler {
 
   @override
   Future<void> skipToPrevious() async {
+    superPrint("prev");
+
     final currentIndex = musicPlayingState.queue.value
         .indexOf(musicPlayingState.currentMediaItem.value!);
     if (currentIndex - 1 >= 0) {

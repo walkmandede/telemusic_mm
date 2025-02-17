@@ -11,6 +11,7 @@ import 'package:telemusic_v2/utils/services/network/api_end_points.dart';
 import 'package:telemusic_v2/utils/services/network/api_request_model.dart';
 import 'package:telemusic_v2/utils/services/network/api_response_model.dart';
 import 'package:telemusic_v2/utils/services/network/api_service.dart';
+import 'package:dio/dio.dart' as dio;
 
 enum EnumGetMusicTypes {
   artists(label: "Artists"),
@@ -233,7 +234,6 @@ class ApiRepo {
             url: ApiEndPoints.getAllPlans,
           ),
           xNeedToken: true);
-
       if (apiResponse.xSuccess) {
         String imagePath = apiResponse.bodyData["imagePath"] ?? "";
         Iterable data = apiResponse.bodyData["data"];
@@ -398,6 +398,47 @@ class ApiRepo {
               data: {
                 "user_id": dataController.currentUser.value!.id.toString(),
               }),
+          xNeedToken: true);
+    } catch (e) {
+      superPrint(e);
+    }
+    return result;
+  }
+
+  Future<ApiResponseModel> savePaymentMethod({
+    required String type,
+    required String planId,
+    required String paymentData,
+    required String orderId,
+    required String token,
+  }) async {
+    ApiResponseModel result = ApiResponseModel.getInstance();
+    try {
+      result = await ApiService().makeARequest(
+          apiRequestData: ApiRequestModel(
+              enumApiRequestMethods: EnumApiRequestMethods.post,
+              url: ApiEndPoints.savePaymentTransaction,
+              data: {
+                "type": type,
+                "plan_id": planId,
+                "payment_data": paymentData,
+                "order_id": orderId
+              }),
+          xNeedToken: true);
+    } catch (e) {
+      superPrint(e);
+    }
+    return result;
+  }
+
+  Future<ApiResponseModel> getUserSettingDetail() async {
+    ApiResponseModel result = ApiResponseModel.getInstance();
+    try {
+      result = await ApiService().makeARequest(
+          apiRequestData: ApiRequestModel(
+            enumApiRequestMethods: EnumApiRequestMethods.get,
+            url: ApiEndPoints.getUserSettingDetail,
+          ),
           xNeedToken: true);
     } catch (e) {
       superPrint(e);

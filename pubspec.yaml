@@ -1,7 +1,7 @@
 name: telemusic_v2
 description: "A new Flutter project."
 publish_to: 'none'
-version: 7.0.0
+version: 1.0.3+22
 
 environment:
   sdk: ^3.5.4
@@ -30,6 +30,9 @@ dependencies:
   flutter_native_splash:
   flutter_launcher_icons:
   google_mobile_ads:
+  flutter_stripe: ^11.4.0
+  in_app_purchase: ^3.2.1
+  flutter_paypal_payment: ^1.0.8
 
 dev_dependencies:
   flutter_test:

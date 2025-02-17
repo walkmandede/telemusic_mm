@@ -133,6 +133,27 @@ class MusicModel extends Equatable {
         extras: {"id": id.toString()});
   }
 
+  factory MusicModel.fromMediaItem({required MediaItem mediaItem}) {
+    return MusicModel(
+        id: int.tryParse(mediaItem.extras!["id"].toString()) ?? 0,
+        audioUrl: mediaItem.id,
+        audioTitle: mediaItem.title,
+        artistsName: mediaItem.artist!,
+        image: mediaItem.artUri.toString(),
+        audioDuration: mediaItem.duration!.inSeconds.toString(),
+        artistIds: [],
+        audioGenreId: 0,
+        audioLanguage: 0,
+        audioSlug: "",
+        createdAt: DateTime(0),
+        downloadPrice: "",
+        favourite: false,
+        isFeatured: false,
+        isRecommended: false,
+        isTrending: false,
+        listeningCount: 0);
+  }
+
   Duration _convertToDurationInSeconds(String time) {
     // Remove any unwanted newline characters and trim the string
     time = time.trim();

@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:telemusic_v2/src/controllers/ads/ads_handler.dart';
 import 'package:telemusic_v2/src/controllers/data_controller.dart';
 import 'package:telemusic_v2/src/controllers/my_audio_handler.dart';
+import 'package:telemusic_v2/src/models/music_model.dart';
 import 'package:telemusic_v2/src/views/_common/image_placeholder_widget.dart';
+import 'package:telemusic_v2/src/views/playlist/widgets/all_playlist_bs.dart';
 import 'package:telemusic_v2/utils/constants/app_assets.dart';
 import 'package:telemusic_v2/utils/constants/app_constants.dart';
 import 'package:telemusic_v2/utils/constants/app_extensions.dart';
@@ -321,6 +323,25 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 horizontal: AppConstants.basePadding),
             child: Row(
               children: [
+                Expanded(
+                  child: IconButton(
+                      onPressed: () async {
+                        vibrateNow();
+                        await Future.delayed(const Duration(milliseconds: 100));
+
+                        Get.bottomSheet(AllPlaylistBottomSheet(
+                            musicModel: MusicModel.fromMediaItem(
+                                mediaItem: mediaItem)));
+                      },
+                      icon: SvgPicture.string(
+                        AppSvgs.addToPlayList,
+                        colorFilter: ColorFilter.mode(
+                            dataController.xIsFavorite(audioUrl: mediaItem.id)
+                                ? AppTheme.primaryYellow
+                                : AppTheme.lightGray,
+                            BlendMode.srcIn),
+                      )),
+                ),
                 Expanded(
                   child: ValueListenableBuilder(
                     valueListenable: audioHandler.musicPlayingState.xShuffle,

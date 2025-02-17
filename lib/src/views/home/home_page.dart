@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   _initLoad() async {
     log("initloaded");
     homePageController = Get.put(HomePageController());
+    await dataController.updateUserInfo();
     await dataController.updateFavoriteList();
   }
 

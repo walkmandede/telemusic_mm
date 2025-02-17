@@ -167,85 +167,88 @@ class EachMusicDisplayWidget extends StatelessWidget {
                               ],
                             ),
                           ),
-                          PopupMenuItem(
-                            onTap: () async {
-                              vibrateNow();
-                              DataController dataController = Get.find();
-                              final xPremium =
-                                  dataController.currentUser.value!.xPremium();
-                              if (xPremium) {
-                                DialogService().showConfirmDialog(
-                                    context: context,
-                                    label:
-                                        "Please be a premium member to download this song");
-                                return;
-                              }
-                              ValueNotifier<int> current = ValueNotifier(-1);
-                              ValueNotifier<int> max = ValueNotifier(-1);
-                              AudioDownloader.downloadAudio(
-                                musicModel: musicModel,
-                                onReceivedProgress: (p0, p1) {
-                                  current.value = p0;
-                                  if (max.value != p1) {
-                                    max.value = p1;
-                                  } else {}
+                          if (false)
+                            PopupMenuItem(
+                              onTap: () async {
+                                vibrateNow();
+                                DataController dataController = Get.find();
+                                final xPremium = dataController
+                                    .currentUser.value!
+                                    .xPremium();
+                                if (xPremium) {
+                                  DialogService().showConfirmDialog(
+                                      context: context,
+                                      label:
+                                          "Please be a premium member to download this song");
+                                  return;
+                                }
+                                ValueNotifier<int> current = ValueNotifier(-1);
+                                ValueNotifier<int> max = ValueNotifier(-1);
+                                AudioDownloader.downloadAudio(
+                                  musicModel: musicModel,
+                                  onReceivedProgress: (p0, p1) {
+                                    current.value = p0;
+                                    if (max.value != p1) {
+                                      max.value = p1;
+                                    } else {}
 
-                                  if (p0 == p1) {
-                                    DialogService()
-                                        .dismissDialog(context: context);
-                                  }
-                                },
-                              );
-                              Future.delayed(const Duration(milliseconds: 100));
-                              DialogService().showCustomDialog(
-                                  context: context,
-                                  widget: ValueListenableBuilder(
-                                    valueListenable: max,
-                                    builder: (context, max, child) {
-                                      return ValueListenableBuilder(
-                                        valueListenable: current,
-                                        builder: (context, current, child) {
-                                          if (current == -1 || max == -1) {
-                                            return const SizedBox.shrink();
-                                          }
-                                          return Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Text(
-                                                  "Downloading please wait"),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  value: current / max,
+                                    if (p0 == p1) {
+                                      DialogService()
+                                          .dismissDialog(context: context);
+                                    }
+                                  },
+                                );
+                                Future.delayed(
+                                    const Duration(milliseconds: 100));
+                                DialogService().showCustomDialog(
+                                    context: context,
+                                    widget: ValueListenableBuilder(
+                                      valueListenable: max,
+                                      builder: (context, max, child) {
+                                        return ValueListenableBuilder(
+                                          valueListenable: current,
+                                          builder: (context, current, child) {
+                                            if (current == -1 || max == -1) {
+                                              return const SizedBox.shrink();
+                                            }
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Text(
+                                                    "Downloading please wait"),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: current / max,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                  "${(current / max * 100).toInt().toString()} %"),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ));
-                              // Get.dialog(Dialog(
-                              //   backgroundColor: Colors.transparent,
-                              //   child: ,
-                              // ));
-                            },
-                            child: Row(
-                              children: [
-                                SvgPicture.string(
-                                  AppSvgs.download,
-                                  colorFilter: const ColorFilter.mode(
-                                      AppTheme.white, BlendMode.srcIn),
-                                ),
-                                (5.widthBox()),
-                                const Text("Download"),
-                              ],
+                                                Text(
+                                                    "${(current / max * 100).toInt().toString()} %"),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ));
+                                // Get.dialog(Dialog(
+                                //   backgroundColor: Colors.transparent,
+                                //   child: ,
+                                // ));
+                              },
+                              child: Row(
+                                children: [
+                                  SvgPicture.string(
+                                    AppSvgs.download,
+                                    colorFilter: const ColorFilter.mode(
+                                        AppTheme.white, BlendMode.srcIn),
+                                  ),
+                                  (5.widthBox()),
+                                  const Text("Download"),
+                                ],
+                              ),
                             ),
-                          ),
                           ...moreActions
                         ];
                       },

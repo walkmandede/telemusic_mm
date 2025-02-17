@@ -1,8 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemusic_v2/src/controllers/data_controller.dart';
 import 'package:telemusic_v2/src/controllers/my_audio_handler.dart';
 import 'package:telemusic_v2/src/views/gateway/gateway_page.dart';
+import 'package:telemusic_v2/utils/constants/app_functions.dart';
 import 'package:telemusic_v2/utils/constants/app_theme.dart';
 
 void main() async {
@@ -46,6 +48,10 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    try {
+      DataController dataController = Get.find();
+      superPrint(dataController.apiToken);
+    } catch (_) {}
     return MediaQuery(
       data: MediaQuery.of(context)
           .copyWith(textScaler: const TextScaler.linear(1)),

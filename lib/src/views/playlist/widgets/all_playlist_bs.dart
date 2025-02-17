@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:telemusic_v2/src/models/music_model.dart';
 import 'package:telemusic_v2/src/models/playlist_model.dart';
 import 'package:telemusic_v2/src/views/playlist/c_playlist_page_controller.dart';
+import 'package:telemusic_v2/src/views/playlist/widgets/add_new_playlist_bs.dart';
 import 'package:telemusic_v2/utils/constants/app_constants.dart';
 import 'package:telemusic_v2/utils/constants/app_functions.dart';
 import 'package:telemusic_v2/utils/constants/app_theme.dart';
@@ -126,6 +127,18 @@ class _AllPlaylistBottomSheetState extends State<AllPlaylistBottomSheet> {
                           ),
                         );
                       } else {
+                        if (allPlaylists.isEmpty) {
+                          return Center(
+                            child: TextButton(
+                                onPressed: () {
+                                  Get.back();
+                                  Get.bottomSheet(
+                                      const AddNewPlaylistBottomSheet());
+                                },
+                                child: const Text(
+                                    "No playlist Yet!\nClick here to create one")),
+                          );
+                        }
                         return ListView.builder(
                           padding: EdgeInsets.zero,
                           itemCount: allPlaylists.length,

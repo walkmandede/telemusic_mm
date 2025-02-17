@@ -103,6 +103,7 @@ class _SettingPageState extends State<SettingPage> {
                     ValueListenableBuilder(
                       valueListenable: dataController.currentUser,
                       builder: (context, currentUser, child) {
+                        return const SizedBox.shrink();
                         if (currentUser == null) {
                           return const SizedBox.shrink();
                         } else {

@@ -28,4 +28,7 @@ class ApiEndPoints {
   static const getBlogs = "get_blogs";
 
   static const deleteAccount = "deleteAccountPermanent";
+
+  static const getUserSettingDetail = "get_user_setting_details";
+  static const savePaymentTransaction = "save_payment_transaction";
 }

@@ -163,7 +163,6 @@ class _AlbumDetailPageState extends State<AlbumDetailPage> {
     return ValueListenableBuilder(
       valueListenable: albumDetailPageController.pageScrolledValue,
       builder: (context, pageScrolledValue, child) {
-        superPrint(widget.albumModel.image);
         return Stack(
           children: [
             Opacity(

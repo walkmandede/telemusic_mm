@@ -12,17 +12,19 @@ import 'dart:io';
 // iOS Banner New Tag - /22920965380/4747748
 // Interstitial - /22920965380/202411
 
+// - /22920965380/84748484
 class AdsHelper {
-  static const xTestMode = true;
+  static const xTestMode = false;
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
       return xTestMode
           ? 'ca-app-pub-3940256099942544/6300978111'
-          : '/22920965380/23423432342'; // Google Admob Test ID
+          : '/22920965380/84748484';
+      // : '/22920965380/23423432342'; // Google Admob Test ID
     } else if (Platform.isIOS) {
       return xTestMode
           ? 'ca-app-pub-3940256099942544/6300978111'
-          : '/22920965380/202400'; // Google Admob Test ID
+          : '/22920965380/84748484';
     } else {
       throw UnsupportedError('Unsupported platform');
     }
@@ -32,11 +34,12 @@ class AdsHelper {
     if (Platform.isAndroid) {
       return xTestMode
           ? 'ca-app-pub-3940256099942544/6300978111'
-          : '/22920965380/9974390';
+          : '/22920965380/84748484';
+      // : '/22920965380/9974390';
     } else if (Platform.isIOS) {
       return xTestMode
           ? 'ca-app-pub-3940256099942544/6300978111'
-          : '/22920965380/4747748'; // Google Admob Test ID
+          : '/22920965380/84748484';
     } else {
       throw UnsupportedError('Unsupported platform');
     }

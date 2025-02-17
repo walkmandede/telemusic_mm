@@ -8,13 +8,11 @@ import 'package:telemusic_v2/src/models/artist_model.dart';
 import 'package:telemusic_v2/src/views/_common/image_placeholder_widget.dart';
 import 'package:telemusic_v2/src/views/artist/detail/c_artist_detail_page_controller.dart';
 import 'package:telemusic_v2/src/views/artist/detail/widgets/w_actions_section.dart';
-import 'package:telemusic_v2/src/views/artist/detail/widgets/w_stream_count_section.dart';
 import 'package:telemusic_v2/src/views/artist/detail/widgets/w_tab_bar_widget.dart';
 import 'package:telemusic_v2/src/views/music_player/c_music_player_page_controller.dart';
 import 'package:telemusic_v2/src/views/music_player/music_player_widget.dart';
 import 'package:telemusic_v2/utils/constants/app_constants.dart';
 import 'package:telemusic_v2/utils/constants/app_extensions.dart';
-import 'package:telemusic_v2/utils/constants/app_functions.dart';
 import 'package:telemusic_v2/utils/constants/app_theme.dart';
 
 class ArtistDetailPage extends StatefulWidget {
@@ -46,7 +44,6 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
     artistDetailPageController = Get.put(ArtistDetailPageController());
     artistDetailPageController.initLoad(artistModel: widget.artistModel);
     adsHandler.loadBannerAd();
-    superPrint("artist Detail page");
   }
 
   @override
@@ -82,8 +79,36 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                           bottom: Get.mediaQuery.padding.bottom),
                       child: const MusicPlayerWidget(),
                     ),
-                  )
+                  ),
+                  profileImage(),
                 ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget profileImage() {
+    final baseSize = Size(Get.width, Get.height * 0.125);
+    return ValueListenableBuilder(
+      valueListenable: artistDetailPageController.pageScrolledValue,
+      builder: (context, pageScrolledValue, child) {
+        final xShouldShow = pageScrolledValue <= 0.35;
+        return Opacity(
+          opacity: xShouldShow ? 1 : 0,
+          child: Transform.translate(
+            offset: Offset(AppConstants.basePadding,
+                (Get.width - (baseSize.height / 2)) * (1 - pageScrolledValue)),
+            child: Card(
+              shape: const CircleBorder(),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10000),
+                child: CachedNetworkImage(
+                  height: baseSize.height,
+                  imageUrl: widget.artistModel.image,
+                ),
               ),
             ),
           ),
@@ -114,6 +139,7 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                 children: [
                   // if (widget.artistModel.enumStreamChannelCountMap.isNotEmpty)
                   //   const ArtistDetailStreamCountSection(),
+                  (Get.height * 0.125 / 2).heightBox(),
                   const ArtistDetailActionsSection(),
                   adsHandler.getBannerAdWidget(),
                   const ArtistDetailTabBarWidget(),
@@ -176,6 +202,8 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
   }
 
   Widget artistThumbnailWidget() {
+    ArtistDetailPageController artistDetailPageController = Get.find();
+    final firstAlbumn = artistDetailPageController.allAlbums.firstOrNull;
     return ValueListenableBuilder(
       valueListenable: artistDetailPageController.pageScrolledValue,
       builder: (context, pageScrolledValue, child) {
@@ -188,7 +216,9 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
                 child: Stack(
                   children: [
                     CachedNetworkImage(
-                      imageUrl: widget.artistModel.image,
+                      imageUrl: firstAlbumn != null
+                          ? firstAlbumn.image
+                          : widget.artistModel.image,
                       width: Get.width,
                       height: Get.width,
                       fit: BoxFit.cover,

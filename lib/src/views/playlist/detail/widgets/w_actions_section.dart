@@ -58,7 +58,9 @@ class PlaylistDetailActionsSection extends StatelessWidget {
                                 vibrateNow();
                                 DialogService().showConfirmDialog(
                                   context: Get.context!,
-                                  label: "Are you sure to delete?",
+                                  label: "Are you sure?",
+                                  yesLabel: "Delete",
+                                  noLabel: "Cancel",
                                   onClickYes: () {
                                     vibrateNow();
                                     playlistDetailPageController

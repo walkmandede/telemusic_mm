@@ -25,19 +25,19 @@ class AdsHandler extends GetxController {
 
   @override
   void dispose() {
-    //
+    if (_bannerAd != null) {
+      _bannerAd!.dispose();
+    }
     super.dispose();
   }
 
   /// Initialize Google Mobile Ads SDK
   Future<void> initialize() async {
-    final status = await MobileAds.instance.initialize();
-    superPrint(status.adapterStatuses.values.first.description,
-        title: "Ads Status");
+    await MobileAds.instance.initialize();
+
     MobileAds.instance.updateRequestConfiguration(
       RequestConfiguration(testDeviceIds: ["TEST_EMULATOR"]),
     );
-    superPrint("Advertising ID: ${status.adapterStatuses}");
   }
 
   void addClickCount() {
@@ -69,8 +69,7 @@ class AdsHandler extends GetxController {
           if (onAdLoaded != null) onAdLoaded();
         },
         onAdFailedToLoad: (ad, error) {
-          superPrint(ad.responseInfo.toString() + "-- \n--" + error.toString(),
-              title: "Ads");
+          superPrint("${ad.responseInfo}-- \n--$error", title: "Ads");
           ad.dispose();
           isBannerAdLoaded = false;
           if (onAdFailedToLoad != null) onAdFailedToLoad(error);
@@ -86,10 +85,12 @@ class AdsHandler extends GetxController {
       return const SizedBox.shrink();
     }
     if (isBannerAdLoaded && _bannerAd != null) {
-      return SizedBox(
-        width: _bannerAd!.size.width.toDouble(),
-        height: _bannerAd!.size.height.toDouble(),
-        child: AdWidget(ad: _bannerAd!),
+      return Center(
+        child: SizedBox(
+          width: _bannerAd!.size.width.toDouble(),
+          height: _bannerAd!.size.height.toDouble(),
+          child: AdWidget(ad: _bannerAd!),
+        ),
       );
     } else {
       return const SizedBox.shrink();
