@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:telemusic_v2/src/controllers/data_controller.dart';
 import 'package:telemusic_v2/src/models/album_model.dart';
+import 'package:telemusic_v2/src/models/app_remote_config.dart';
 import 'package:telemusic_v2/src/models/artist_model.dart';
 import 'package:telemusic_v2/src/models/blog_model.dart';
 import 'package:telemusic_v2/src/models/category_model.dart';
@@ -442,6 +443,18 @@ class ApiRepo {
           xNeedToken: true);
     } catch (e) {
       superPrint(e);
+    }
+    return result;
+  }
+
+  Future<AppRemoteConfig?> getAppRemoteConfig() async {
+    AppRemoteConfig? result;
+    try {
+      final response = await dio.Dio().get(
+          "https://raw.githubusercontent.com/walkmandede/app_config/refs/heads/main/telemusicmm.json");
+      result = AppRemoteConfig.fromMap(data: response.data);
+    } catch (e) {
+      //
     }
     return result;
   }

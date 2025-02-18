@@ -51,11 +51,15 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
   Future<void> initLoad() async {
     _subscription = InAppPurchase.instance.purchaseStream.listen(
       (List<PurchaseDetails> purchaseDetailsList) async {
+        superPrint(purchaseDetailsList, title: "Handling");
+
+        // DialogService().dismissDialog(context: Get.context!);
         if (purchaseDetailsList.isNotEmpty) {
           final firstPurchase = purchaseDetailsList.first;
+          if (firstPurchase.status != PurchaseStatus.pending) {
+            DialogService().dismissDialog(context: Get.context!);
+          }
           if (firstPurchase.status == PurchaseStatus.purchased) {
-            superPrint(firstPurchase.purchaseID, title: "Pruchase ID");
-            superPrint(firstPurchase.purchaseID);
             await proceedSavePlan(
                 orderId: firstPurchase.transactionDate ?? "-",
                 planId: widget.planModel.id.toString(),
@@ -204,13 +208,17 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
   }
 
   Future<void> proceedOnClickIap() async {
+    DialogService().showLoadingDialog(context: context);
     final result =
         await iapService.fetchProducts([widget.planModel.productId.toString()]);
     // await iapService.iap.restorePurchases();
+
     superPrint("restored");
     if (result.isNotEmpty) {
       await iapService.buyProduct(result.first);
     }
+
+    // DialogService().dismissDialog(context: Get.context!);
   }
 
   Future<void> proceedOnClickPayPal() async {
@@ -314,46 +322,56 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      widget.planModel.planName,
-                      style: const TextStyle(
-                          fontSize: AppConstants.baseFontSizeXL),
-                    ),
-                    Text(
-                      "${widget.planModel.validity} days for ${widget.planModel.planAmount} \$",
-                      style:
-                          const TextStyle(fontSize: AppConstants.baseFontSizeL),
-                    ),
+                    // Text(
+                    //   widget.planModel.planName,
+                    //   style: const TextStyle(
+                    //       fontSize: AppConstants.baseFontSizeXL),
+                    // ),
+                    // Text(
+                    //   "${widget.planModel.validity} days for ${widget.planModel.planAmount} \$",
+                    //   style:
+                    //       const TextStyle(fontSize: AppConstants.baseFontSizeL),
+                    // ),
                     (AppConstants.basePadding).heightBox(),
-                    SizedBox(
-                      width: Get.width * 0.6,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            vibrateNow();
-                            proceedOnClickStripePay();
-                          },
-                          child: const Text("Purchase with Stripe Pay")),
-                    ),
-                    SizedBox(
-                      width: Get.width * 0.6,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            vibrateNow();
-                            proceedOnClickPayPal();
-                          },
-                          child: const Text("Purchase with Paypal")),
-                    ),
+                    if (!dataController.xFM())
+                      SizedBox(
+                        width: Get.width * 0.9,
+                        height: AppConstants.baseButtonHeight,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              vibrateNow();
+                              proceedOnClickStripePay();
+                            },
+                            child: const Text("Purchase with Stripe Pay")),
+                      ),
+                    (AppConstants.basePadding).heightBox(),
+
+                    if (!dataController.xFM())
+                      SizedBox(
+                        width: Get.width * 0.9,
+                        height: AppConstants.baseButtonHeight,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              vibrateNow();
+                              proceedOnClickPayPal();
+                            },
+                            child: const Text("Purchase with Paypal")),
+                      ),
+                    (AppConstants.basePadding).heightBox(),
+
                     if (Platform.isIOS)
                       SizedBox(
-                        width: Get.width * 0.6,
+                        width: Get.width * 0.9,
+                        height: AppConstants.baseButtonHeight,
                         child: ElevatedButton(
                             onPressed: () {
                               vibrateNow();
                               proceedOnClickIap();
                             },
-                            child: Text(Platform.isIOS
-                                ? "Purchase with Apple Pay"
-                                : "Purchase with Google Pay")),
+                            child: Text(
+                              "Purchase ${widget.planModel.planName} Premium Plan for\n${widget.planModel.planAmount} \$",
+                              textAlign: TextAlign.center,
+                            )),
                       ),
                   ],
                 ),

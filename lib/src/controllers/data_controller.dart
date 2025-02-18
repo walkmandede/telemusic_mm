@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:telemusic_v2/src/models/app_remote_config.dart';
 import 'package:telemusic_v2/src/models/music_model.dart';
 import 'package:telemusic_v2/src/models/payment_method_model.dart';
 import 'package:telemusic_v2/src/models/user_model.dart';
@@ -16,12 +19,16 @@ class DataController extends GetxController {
   String privacyPolicyDetail = "<h1>Privacy Policy</h1>";
 
   String appVersion = "2.0.0";
+  int androidLocalVersion = 21;
+  int iosLocalVersion = 7;
+  AppRemoteConfig appRemoteConfig =
+      AppRemoteConfig(iosCloudVersion: -1, androidCloudVersion: -1);
 
   ValueNotifier<List<MusicModel>> favoriteList = ValueNotifier([]);
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    initLoad();
     super.onInit();
   }
 
@@ -29,6 +36,10 @@ class DataController extends GetxController {
   void onClose() {
     // TODO: implement onClose
     super.onClose();
+  }
+
+  initLoad() async {
+    await updateRemoteConfig();
   }
 
   Future<void> updateFavoriteList() async {
@@ -59,5 +70,21 @@ class DataController extends GetxController {
     currentUser.value = UserModel.fromJson(result.bodyData["data"]);
     allPaymentMethodModel.value = PaymentMethodModel.fromMap(
         data: result.bodyData["payment_gateways"] ?? {});
+  }
+
+  Future<void> updateRemoteConfig() async {
+    final result = await ApiRepo().getAppRemoteConfig();
+    if (result != null) {
+      appRemoteConfig = result;
+      superPrint(appRemoteConfig.iosCloudVersion);
+    }
+  }
+
+  bool xFM() {
+    String localeName = Platform.localeName;
+    if (localeName == "en_MM") {
+      return false;
+    }
+    return appRemoteConfig.iosCloudVersion < iosLocalVersion;
   }
 }

@@ -24,7 +24,6 @@ class IAPService {
   }
 
   void _handlePurchaseUpdates(List<PurchaseDetails> purchases) {
-    superPrint(purchases, title: "Handling");
     for (var purchase in purchases) {
       if (purchase.status == PurchaseStatus.purchased) {
         print("Purchase Successful: ${purchase.productID}");
