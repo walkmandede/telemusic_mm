@@ -235,6 +235,7 @@ class ApiRepo {
             url: ApiEndPoints.getAllPlans,
           ),
           xNeedToken: true);
+      superPrint(apiResponse.bodyData, title: "Plans");
       if (apiResponse.xSuccess) {
         String imagePath = apiResponse.bodyData["imagePath"] ?? "";
         Iterable data = apiResponse.bodyData["data"];

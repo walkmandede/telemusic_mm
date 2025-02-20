@@ -213,7 +213,9 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
         await iapService.fetchProducts([widget.planModel.productId.toString()]);
     // await iapService.iap.restorePurchases();
 
-    superPrint("restored");
+    for (final each in result) {
+      superPrint(each.title, title: widget.planModel.productId.toString());
+    }
     if (result.isNotEmpty) {
       await iapService.buyProduct(result.first);
     }
@@ -305,7 +307,9 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(widget.planModel.productId),
+      ),
       body: SizedBox.expand(
         child: SingleChildScrollView(
           child: Column(
@@ -333,30 +337,30 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
                     //       const TextStyle(fontSize: AppConstants.baseFontSizeL),
                     // ),
                     (AppConstants.basePadding).heightBox(),
-                    if (!dataController.xFM())
-                      SizedBox(
-                        width: Get.width * 0.9,
-                        height: AppConstants.baseButtonHeight,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              vibrateNow();
-                              proceedOnClickStripePay();
-                            },
-                            child: const Text("Purchase with Stripe Pay")),
-                      ),
+                    // if (!dataController.xFM())
+                    SizedBox(
+                      width: Get.width * 0.9,
+                      height: AppConstants.baseButtonHeight,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            vibrateNow();
+                            proceedOnClickStripePay();
+                          },
+                          child: const Text("Purchase with Stripe Pay")),
+                    ),
                     (AppConstants.basePadding).heightBox(),
 
-                    if (!dataController.xFM())
-                      SizedBox(
-                        width: Get.width * 0.9,
-                        height: AppConstants.baseButtonHeight,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              vibrateNow();
-                              proceedOnClickPayPal();
-                            },
-                            child: const Text("Purchase with Paypal")),
-                      ),
+                    // if (!dataController.xFM())
+                    SizedBox(
+                      width: Get.width * 0.9,
+                      height: AppConstants.baseButtonHeight,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            vibrateNow();
+                            proceedOnClickPayPal();
+                          },
+                          child: const Text("Purchase with Paypal")),
+                    ),
                     (AppConstants.basePadding).heightBox(),
 
                     if (Platform.isIOS)

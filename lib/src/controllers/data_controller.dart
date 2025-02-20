@@ -81,10 +81,10 @@ class DataController extends GetxController {
   }
 
   bool xFM() {
-    String localeName = Platform.localeName;
-    if (localeName == "en_MM") {
-      return false;
-    }
+    // String localeName = Platform.localeName;
+    // if (localeName == "en_MM") {
+    //   return false;
+    // }
     return appRemoteConfig.iosCloudVersion < iosLocalVersion;
   }
 }
