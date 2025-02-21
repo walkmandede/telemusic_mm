@@ -338,30 +338,32 @@ class _PremiumDetailPageState extends State<PremiumDetailPage> {
                     // ),
                     (AppConstants.basePadding).heightBox(),
                     // if (!dataController.xFM())
-                    SizedBox(
-                      width: Get.width * 0.9,
-                      height: AppConstants.baseButtonHeight,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            vibrateNow();
-                            proceedOnClickStripePay();
-                          },
-                          child: const Text("Purchase with Stripe Pay")),
-                    ),
-                    (AppConstants.basePadding).heightBox(),
+                    if (!Platform.isIOS)
+                      SizedBox(
+                        width: Get.width * 0.9,
+                        height: AppConstants.baseButtonHeight,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              vibrateNow();
+                              proceedOnClickStripePay();
+                            },
+                            child: const Text("Purchase with Stripe Pay")),
+                      ),
+                    if (!Platform.isIOS) (AppConstants.basePadding).heightBox(),
 
                     // if (!dataController.xFM())
-                    SizedBox(
-                      width: Get.width * 0.9,
-                      height: AppConstants.baseButtonHeight,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            vibrateNow();
-                            proceedOnClickPayPal();
-                          },
-                          child: const Text("Purchase with Paypal")),
-                    ),
-                    (AppConstants.basePadding).heightBox(),
+                    if (!Platform.isIOS)
+                      SizedBox(
+                        width: Get.width * 0.9,
+                        height: AppConstants.baseButtonHeight,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              vibrateNow();
+                              proceedOnClickPayPal();
+                            },
+                            child: const Text("Purchase with Paypal")),
+                      ),
+                    if (!Platform.isIOS) (AppConstants.basePadding).heightBox(),
 
                     if (Platform.isIOS)
                       SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:telemusic_v2/injector.dart';
 import '../../constants/app_constants.dart';
 
 DialogRoute? dialogRoute;
@@ -181,11 +182,11 @@ class DialogService {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return const Dialog(
+        return Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
           child: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
                 horizontal: AppConstants.basePaddingL,
                 vertical: AppConstants.basePaddingL),
             child: Column(
@@ -197,7 +198,13 @@ class DialogService {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Card(
-                      child: CupertinoActivityIndicator(),
+                      shape: const CircleBorder(),
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: CupertinoActivityIndicator(
+                            color: Theme.of(context).primaryColor,
+                          )),
                     ),
                   ],
                 ),
